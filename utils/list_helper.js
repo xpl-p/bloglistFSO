@@ -1,8 +1,6 @@
 const totalLikes = (blogs) => {
   return blogs.reduce((acc, cur) => {
-    acc += cur.likes
-    console.log(acc)
-    return(acc)
+    return acc + cur.likes
   },0)
 }
 
