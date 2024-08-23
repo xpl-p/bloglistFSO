@@ -1,6 +1,6 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
-const listHelper = require('../utils/list_helper')
+const listHelper = require('./list_helper')
 
 const blogs = [
   {
@@ -80,13 +80,44 @@ describe('total likes', () => {
   })
 })
 
-describe('most likes', () => {
+describe('favorite blog', () => {
   test('correctly finds highest', () => {
-    const result = listHelper.mostLikes(blogs)
-    assert.strictEqual(result.likes, 12)
+    const result = listHelper.favoriteBlog(blogs)
+    assert.deepStrictEqual(result, { _id: '5a422b3a1b54a676234d17f9', title: 'Canonical string reduction', author: 'Edsger W. Dijkstra', url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html', likes: 12, __v: 0 })
   })
   test('correctly finds highest when length of 1', () => {
-    const result = listHelper.mostLikes(listWithOneBlog)
+    const result = listHelper.favoriteBlog(listWithOneBlog)
     assert.strictEqual(result.likes, 5)
+  })
+})
+
+
+describe('most blogs', () => {
+  test('returns count for multiple blogs and authors', () => {
+    const result = listHelper.mostBlogs(blogs)
+    assert.deepStrictEqual(result, { author: 'Robert C. Martin', blogs: 3 })
+  })
+  test('returns count for one blog', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    assert.deepStrictEqual(result, { author: 'Edsger W. Dijkstra', blogs: 1 })
+  })
+  test('returns empty string and 0 for empty list', () => {
+    const result = listHelper.mostBlogs([])
+    assert.deepStrictEqual(result, { author: '', blogs: 0 })
+  })
+})
+
+describe('most likes', () => {
+  test('test multiple', () => {
+    const result = listHelper.mostLikes(blogs)
+    assert.deepStrictEqual(result, { author: 'Edsger W. Dijkstra', likes: 17 })
+  })
+  test('test one', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    assert.deepStrictEqual(result, { author: 'Edsger W. Dijkstra', likes: 5 })
+  })
+  test('test none', () => {
+    const result = listHelper.mostLikes([])
+    assert.deepStrictEqual(result, { author: '', likes: 0 })
   })
 })
